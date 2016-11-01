@@ -1,0 +1,35 @@
+{
+    "author": "BigMontana",
+    "dependencies": {
+        "pebble-fctx": "^1.6.1"
+    },
+    "keywords": [],
+    "name": "fctx",
+    "pebble": {
+        "displayName": "FCTX",
+        "enableMultiJS": true,
+        "messageKeys": [],
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "data/LCARSGTJ3.ffont",
+                    "name": "LCARS_FONT",
+                    "targetPlatforms": [
+                        "basalt"
+                    ],
+                    "type": "raw"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "basalt"
+        ],
+        "uuid": "58a7dad4-61ed-410f-b086-96e88dbe62e7",
+        "watchapp": {
+            "watchface": true
+        }
+    },
+    "version": "1.0.0"
+}
