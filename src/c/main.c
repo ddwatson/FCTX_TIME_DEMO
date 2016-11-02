@@ -9,39 +9,20 @@ Layer* g_layer;
 
 void on_layer_update(Layer* layer, GContext* ctx) {
   GRect bounds = layer_get_bounds(layer);
-  FPoint center = FPointI(bounds.size.w / 2, bounds.size.h / 2);
+  //FPoint center = FPointI(bounds.size.w / 2, bounds.size.h / 2);
 
   //create a buffer for the current time
   char time_string[6];
   strftime(time_string, sizeof(time_string), clock_is_24h_style() ?"%H.%M" : "%I.%M", &g_local_time);
 
-  //init fctx for ctx, set the bias which is 0 for opaque and -8 for transparent, and set the color to be drawn with
+  //init fctx for ctx
   FContext fctx;
   fctx_init_context(&fctx, ctx);
+  //set the bias which is 0 for opaque and -8 for transparent
   fctx_set_color_bias(&fctx, 0);
+  //set the color to be drawn with
   fctx_set_fill_color(&fctx, GColorBlack);
 
-  //this will be used to place the text on the screen
-  FPoint date_pos;
-  
-  //
-  int16_t outer_radius = bounds.size.w / 2 - BEZEL_INSET;  //70
-
-  //
-  int16_t from_size = 90;
-  
-  //
-  int16_t pip_size = 6;
-  
-  //
-  int16_t to_size = outer_radius - pip_size;  //64
-  
-  //
-  date_pos.x = center.x;// + INT_TO_FIXED( 5) * to_size / from_size;  //72+56
-  
-  //
-  date_pos.y = center.y;// + INT_TO_FIXED(48) * to_size / from_size;  //84+546
-  
   //begins drawing the filled shape
   fctx_begin_fill(&fctx);
   
@@ -52,10 +33,14 @@ void on_layer_update(Layer* layer, GContext* ctx) {
     //fctx_set_pivot(&fctx, FPointZero);
     //fctx_set_rotation(&fctx, -5 * TRIG_MAX_ANGLE / (2*360));
   
-  //place the origon for the text
-  fctx_set_offset(&fctx, date_pos);
+  //place the origon for the text.  note that using center alignment will offset the text from this point to be truely centered
+  //FPointI will convert PEBBLE SDK coordinates the fctx coodinate system of 16 subpixels or basalt dimensions of 2304 x 2688
+  //for example FPointI(2,2) would appear at SDK coordinates 2,2 if you use GTextAlignmentLeft and FTextAnchorCapTop options below
+  fctx_set_offset(&fctx, FPointI(bounds.size.w / 2, bounds.size.h / 2));
   
   //draw time_string on fctx using the font g_font centering the text
+  //alignment options include: GTextAlignmentLeft, GTextAlignmentRight, GTextAlignmentCenter
+  //anchor options include FTextAnchorBottom, FTextAnchorMiddle, FTextAnchorCapMiddle, FTextAnchorTop, FTextAnchorCapTop, FTextAnchorBaseline
   fctx_draw_string(&fctx, time_string, g_font, GTextAlignmentCenter, FTextAnchorBaseline);
   
   //accumulated shape will be rendered to the GContext
