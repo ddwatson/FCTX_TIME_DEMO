@@ -9,7 +9,8 @@ Layer* g_layer;
 
 void on_layer_update(Layer* layer, GContext* ctx) {
   GRect bounds = layer_get_bounds(layer);
-  //FPoint center = FPointI(bounds.size.w / 2, bounds.size.h / 2);
+  //remember the bounds in this case is the entire watchface so you would want to move the text around to silulate the alighment or input better layer bounds
+  //also check out https://github.com/Spitemare/gilroy/blob/master/src/c/time_layer.c#L15L40 for a nice way to autosize the font to the width of the window
 
   //create a buffer for the current time
   char time_string[6];
